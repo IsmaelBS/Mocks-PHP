@@ -1,15 +1,21 @@
 <?php
 
 use App\CalculadoraImpostos;
-use App\Impostos\Icms;
-use App\Impostos\Iss;
+use App\CalculaDesconto;
+use App\Descontos\DescontoParaMais5Itens;
+use App\Descontos\DescontoParaMaisDe500;
+use App\Descontos\SemDesconto;
 use App\Orcamento;
 
 require __DIR__ . '/vendor/autoload.php';
 
-$calculadoraImpostos = new CalculadoraImpostos;
+$calculadoraDesconto = new CalculaDesconto;
 $orcamento = new Orcamento;
 $orcamento->valor = 1000;
+$orcamento->itens = 4;
 
-echo $calculadoraImpostos->calcularImpostos($orcamento, new Icms) . PHP_EOL;
-echo $calculadoraImpostos->calcularImpostos($orcamento, new Iss) . PHP_EOL;
+$chain = (new DescontoParaMais5Itens)
+            ->proximoDesconto(new DescontoParaMaisDe500)
+            ->proximoDesconto(new SemDesconto);
+
+echo $calculadoraDesconto->calcula($chain, $orcamento) . PHP_EOL;
