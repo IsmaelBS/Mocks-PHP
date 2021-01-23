@@ -5,7 +5,14 @@ namespace App;
 use App\Descontos\Descontos;
 
 class CalculaDesconto {
-    public function calcula(Descontos $desconto,Orcamento $orcamento) {
-        return $desconto->calculaDesconto($orcamento);
+
+    private $middleware;
+
+    public function __construct(Descontos $middleware) {
+        $this->middleware = $middleware;
+    }
+
+    public function calcula(Orcamento $orcamento) {
+        return $this->middleware->calculaDesconto($orcamento);
     }
 }

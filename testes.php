@@ -9,13 +9,19 @@ use App\Orcamento;
 
 require __DIR__ . '/vendor/autoload.php';
 
-$calculadoraDesconto = new CalculaDesconto;
 $orcamento = new Orcamento;
-$orcamento->valor = 1000;
+$orcamento->valor = 200;
 $orcamento->itens = 4;
 
-$chain = (new DescontoParaMais5Itens)
-            ->proximoDesconto(new DescontoParaMaisDe500)
-            ->proximoDesconto(new SemDesconto);
+$descontoMaisde5Itens = new DescontoParaMais5Itens;
+$descontoMaisde500reais = new DescontoParaMaisDe500;
+$semDesconto = new SemDesconto;
 
-echo $calculadoraDesconto->calcula($chain, $orcamento) . PHP_EOL;
+echo 'Inicio';
+
+$descontoMaisde500reais
+->proximoDesconto($descontoMaisde5Itens)
+->proximoDesconto($semDesconto);
+
+$calculadoraDesconto = new CalculaDesconto($descontoMaisde500reais);
+echo $calculadoraDesconto->calcula($orcamento) . PHP_EOL;
