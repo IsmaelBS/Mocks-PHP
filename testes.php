@@ -13,11 +13,6 @@ $orcamento = new Orcamento;
 $orcamento->valor = 200;
 $orcamento->itens = 4;
 
-$descontoMaisde5Itens = new DescontoParaMais5Itens;
-$descontoMaisde500reais = new DescontoParaMaisDe500;
-$semDesconto = new SemDesconto;
-
-echo 'Inicio';
 
 $descontoMaisde500reais
 ->proximoDesconto($descontoMaisde5Itens)
